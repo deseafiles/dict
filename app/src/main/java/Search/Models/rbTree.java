@@ -1,6 +1,5 @@
 package Search.Models;
-import java.util.Arrays;
-import java.util.List;
+
 
 class Node<K extends Comparable<K>, V> {
     private K key;
@@ -117,7 +116,7 @@ public class rbTree<K extends Comparable<K>, V> {
     }
     
 
-    public void insert(K key) {
+    public void insert(K key, V value) {
         Node<K,V> node = new Node<>();
         node.setParent(null);
         node.setKey(key);
@@ -136,7 +135,7 @@ public class rbTree<K extends Comparable<K>, V> {
             } else if (comparison > 0) {
                 x = x.getRight();
             } else {
-                System.out.println("Duplicate key: " + node.getKey());
+                // System.out.println("Duplicate key: " + node.getKey());
                 return;
             }
         }
@@ -152,7 +151,7 @@ public class rbTree<K extends Comparable<K>, V> {
                 y.setRight(node);
             }
         }
-        System.out.println("Key " + node.getKey() + " berhasil ditambahkan!");
+        // System.out.println("Key " + node.getKey() + " berhasil ditambahkan!");
         fixInsert(node);
     }
     
@@ -335,61 +334,47 @@ public class rbTree<K extends Comparable<K>, V> {
         }
     }
     
-    // private void preOrderHelper(Node node) {
-    //     if (node != TNULL) {
-    //         System.out.print(node.getKey() + " ");
-    //         preOrderHelper(node.getLeft());
-    //         preOrderHelper(node.getRight());
-    //     }
-    // }
+    private void preOrderHelper(Node node) {
+        if (node != TNULL) {
+            System.out.print(node.getKey() + " ");
+            preOrderHelper(node.getLeft());
+            preOrderHelper(node.getRight());
+        }
+    }
 
-    // private void inOrderHelper(Node node) {
-    //     if (node != TNULL) {
-    //         inOrderHelper(node.getLeft());
-    //         System.out.print(node.getKey() + " ");
-    //         inOrderHelper(node.getRight());
-    //     }
-    // }
+    private void inOrderHelper(Node node) {
+        if (node != TNULL) {
+            inOrderHelper(node.getLeft());
+            System.out.print(node.getKey() + " ");
+            inOrderHelper(node.getRight());
+        }
+    }
 
-    // private void postOrderHelper(Node node) {
-    //     if (node != TNULL) {
-    //         postOrderHelper(node.getLeft());
-    //         postOrderHelper(node.getRight());
-    //         System.out.print(node.getKey() + " ");
-    //     }
-    // }
+    private void postOrderHelper(Node node) {
+        if (node != TNULL) {
+            postOrderHelper(node.getLeft());
+            postOrderHelper(node.getRight());
+            System.out.print(node.getKey() + " ");
+        }
+    }
 
-    // public void preorder() {
-    //     System.out.print("Pre Order: ");
-    //     preOrderHelper(this.root);
-    //     System.out.println();
-    // }
+    public void preorder() {
+        System.out.print("Pre Order: ");
+        preOrderHelper(this.root);
+        System.out.println();
+    }
 
-    // public void inorder() {
-    //     System.out.print("In Order: ");
-    //     inOrderHelper(this.root);
-    //     System.out.println();
-    // }
+    public void inorder() {
+        System.out.print("In Order: ");
+        inOrderHelper(this.root);
+        System.out.println();
+    }
 
-    // public void postorder() {
-    //     System.out.print("Post Order: ");
-    //     postOrderHelper(this.root);
-    //     System.out.println();
-    // }
-
-    // public int height() {
-    //     return heightHelper(root);
-    // }
-
-    // private int heightHelper(Node node) {
-    //     if (node == TNULL) {
-    //         return 0;
-    //     } else {
-    //         int leftHeight = heightHelper(node.getLeft());
-    //         int rightHeight = heightHelper(node.getRight());
-    //         return Math.max(leftHeight, rightHeight) + 1;
-    //     }
-    // }
+    public void postorder() {
+        System.out.print("Post Order: ");
+        postOrderHelper(this.root);
+        System.out.println();
+    }
 
     // public boolean search(char key) {
     //     Node result = searchHelper(this.root, key);
@@ -407,12 +392,13 @@ public class rbTree<K extends Comparable<K>, V> {
     //     return searchHelper(node.getRight(), key);
     // }
 
-    public static void main(String []args){
-        rbTree<Integer, String> tree = new rbTree<>();
+    // public static void main(String []args){
+    //     rbTree<Integer, String> tree = new rbTree<>();
 
-        tree.insert(10);
-        tree.insert(20);
+    //     tree.insert(10);
+    //     tree.insert(20);
+    //     tree.insert(30);
         
-        tree.printTree();
-    }
+    //     tree.printTree();
+    // }
 }
