@@ -1,33 +1,36 @@
 package Search.Models;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 class Node<K extends Comparable<K>, V> {
     private K key;
     public V value;
-    private Node <K,V> right;
-    private Node <K, V> left;
-    private Node <K, V>parent;
+    private Node<K, V> right;
+    private Node<K, V> left;
+    private Node<K, V> parent;
     private boolean red;
 
     public Node() {
         // Default constructor for TNULL
     }
 
-    public Node (K key, V value) {
+    public Node(K key, V value) {
         this.key = key;
         this.value = value;
         this.red = true;
     }
 
-    public void setRight(Node<K,V> right) {
+    public void setRight(Node<K, V> right) {
         this.right = right;
     }
 
-    public void setLeft(Node<K,V> left) {
+    public void setLeft(Node<K, V> left) {
         this.left = left;
     }
 
-    public void setParent(Node<K,V> parent) {
+    public void setParent(Node<K, V> parent) {
         this.parent = parent;
     }
 
@@ -39,20 +42,24 @@ class Node<K extends Comparable<K>, V> {
         this.key = key;
     }
 
-    public Node<K,V> getRight() {
+    public Node<K, V> getRight() {
         return right;
     }
 
-    public Node<K,V> getLeft() {
+    public Node<K, V> getLeft() {
         return left;
     }
 
-    public Node<K,V> getParent() {
+    public Node<K, V> getParent() {
         return parent;
     }
 
     public K getKey() {
         return key;
+    }
+
+    public V getValue() {
+        return value;
     }
 
     public boolean isRed() {
@@ -114,7 +121,6 @@ public class rbTree<K extends Comparable<K>, V> {
         }
         root.setRed(false);
     }
-    
 
     public void insert(K key, V value) {
         Node<K,V> node = new Node<>();
@@ -124,8 +130,8 @@ public class rbTree<K extends Comparable<K>, V> {
         node.setRight(TNULL);
         node.setRed(true);
 
-        Node<K,V> y = null;
-        Node<K,V> x = root;
+        Node<K, V> y = null;
+        Node<K, V> x = root;
 
         while (x != TNULL) {
             y = x;
@@ -139,7 +145,7 @@ public class rbTree<K extends Comparable<K>, V> {
                 return;
             }
         }
-        
+
         node.setParent(y); // Menetapkan parent node
         if (y == null) {
             root = node; // root hanya akan di-set ketika node pertama dimasukkan
@@ -154,10 +160,9 @@ public class rbTree<K extends Comparable<K>, V> {
         // System.out.println("Key " + node.getKey() + " berhasil ditambahkan!");
         fixInsert(node);
     }
-    
 
-    private void leftRotate(Node<K,V> x) {
-        Node<K,V> y = x.getRight();
+    private void leftRotate(Node<K, V> x) {
+        Node<K, V> y = x.getRight();
         x.setRight(y.getLeft());
         if (y.getLeft() != TNULL) {
             y.getLeft().setParent(x);
@@ -174,8 +179,8 @@ public class rbTree<K extends Comparable<K>, V> {
         x.setParent(y);
     }
 
-    private void rightRotate(Node <K,V> y) {
-        Node<K,V> x = y.getLeft();
+    private void rightRotate(Node<K, V> y) {
+        Node<K, V> x = y.getLeft();
         y.setLeft(x.getRight());
         if (x.getRight() != TNULL) {
             x.getRight().setParent(y);
@@ -193,146 +198,147 @@ public class rbTree<K extends Comparable<K>, V> {
     }
 
     // private void fixDelete(Node x) {
-    //     Node s;
-    //     while (x != root && !x.isRed()) {
-    //         if (x == x.getParent().getLeft()) {
-    //             s = x.getParent().getRight();
-    //             if (s.isRed()) {
-    //                 s.setRed(false);
-    //                 x.getParent().setRed(true);
-    //                 leftRotate(x.getParent());
-    //                 s = x.getParent().getRight();
-    //             }
+    // Node s;
+    // while (x != root && !x.isRed()) {
+    // if (x == x.getParent().getLeft()) {
+    // s = x.getParent().getRight();
+    // if (s.isRed()) {
+    // s.setRed(false);
+    // x.getParent().setRed(true);
+    // leftRotate(x.getParent());
+    // s = x.getParent().getRight();
+    // }
 
-    //             if (!s.getLeft().isRed() && !s.getRight().isRed()) {
-    //                 s.setRed(true);
-    //                 x = x.getParent();
-    //             } else {
-    //                 if (!s.getRight().isRed()) {
-    //                     s.getLeft().setRed(false);
-    //                     s.setRed(true);
-    //                     rightRotate(s);
-    //                     s = x.getParent().getRight();
-    //                 }
+    // if (!s.getLeft().isRed() && !s.getRight().isRed()) {
+    // s.setRed(true);
+    // x = x.getParent();
+    // } else {
+    // if (!s.getRight().isRed()) {
+    // s.getLeft().setRed(false);
+    // s.setRed(true);
+    // rightRotate(s);
+    // s = x.getParent().getRight();
+    // }
 
-    //                 s.setRed(x.getParent().isRed());
-    //                 x.getParent().setRed(false);
-    //                 s.getRight().setRed(false);
-    //                 leftRotate(x.getParent());
-    //                 x = root;
-    //             }
-    //         } else {
-    //             s = x.getParent().getLeft();
-    //             if (s.isRed()) {
-    //                 s.setRed(false);
-    //                 x.getParent().setRed(true);
-    //                 rightRotate(x.getParent());
-    //                 s = x.getParent().getLeft();
-    //             }
+    // s.setRed(x.getParent().isRed());
+    // x.getParent().setRed(false);
+    // s.getRight().setRed(false);
+    // leftRotate(x.getParent());
+    // x = root;
+    // }
+    // } else {
+    // s = x.getParent().getLeft();
+    // if (s.isRed()) {
+    // s.setRed(false);
+    // x.getParent().setRed(true);
+    // rightRotate(x.getParent());
+    // s = x.getParent().getLeft();
+    // }
 
-    //             if (!s.getRight().isRed() && !s.getLeft().isRed()) {
-    //                 s.setRed(true);
-    //                 x = x.getParent();
-    //             } else {
-    //                 if (!s.getLeft().isRed()) {
-    //                     s.getRight().setRed(false);
-    //                     s.setRed(true);
-    //                     leftRotate(s);
-    //                     s = x.getParent().getLeft();
-    //                 }
+    // if (!s.getRight().isRed() && !s.getLeft().isRed()) {
+    // s.setRed(true);
+    // x = x.getParent();
+    // } else {
+    // if (!s.getLeft().isRed()) {
+    // s.getRight().setRed(false);
+    // s.setRed(true);
+    // leftRotate(s);
+    // s = x.getParent().getLeft();
+    // }
 
-    //                 s.setRed(x.getParent().isRed());
-    //                 x.getParent().setRed(false);
-    //                 s.getLeft().setRed(false);
-    //                 rightRotate(x.getParent());
-    //                 x = root;
-    //             }
-    //         }
-    //     }
-    //     x.setRed(false);
+    // s.setRed(x.getParent().isRed());
+    // x.getParent().setRed(false);
+    // s.getLeft().setRed(false);
+    // rightRotate(x.getParent());
+    // x = root;
+    // }
+    // }
+    // }
+    // x.setRed(false);
     // }
 
     // private void rbTransplant(Node u, Node v) {
-    //     if (u.getParent() == null) {
-    //         root = v;
-    //     } else if (u == u.getParent().getLeft()) {
-    //         u.getParent().setLeft(v);
-    //     } else {
-    //         u.getParent().setRight(v);
-    //     }
-    //     v.setParent(u.getParent());
+    // if (u.getParent() == null) {
+    // root = v;
+    // } else if (u == u.getParent().getLeft()) {
+    // u.getParent().setLeft(v);
+    // } else {
+    // u.getParent().setRight(v);
+    // }
+    // v.setParent(u.getParent());
     // }
 
     // private Node minimum(Node node) {
-    //     while (node.getLeft() != TNULL) {
-    //         node = node.getLeft();
-    //     }
-    //     return node;
+    // while (node.getLeft() != TNULL) {
+    // node = node.getLeft();
+    // }
+    // return node;
     // }
 
     // public void deleteNode(char key) {
-    //     Node z = TNULL;
-    //     Node x, y;
-    //     Node node = root;
+    // Node z = TNULL;
+    // Node x, y;
+    // Node node = root;
 
-    //     while (node != TNULL) {
-    //         if (node.getKey() == key) {
-    //             z = node;
-    //         }
-    //         if (node.getKey() <= key) {
-    //             node = node.getRight();
-    //         } else {
-    //             node = node.getLeft();
-    //         }
-    //     }
+    // while (node != TNULL) {
+    // if (node.getKey() == key) {
+    // z = node;
+    // }
+    // if (node.getKey() <= key) {
+    // node = node.getRight();
+    // } else {
+    // node = node.getLeft();
+    // }
+    // }
 
-    //     if (z == TNULL) {
-    //         System.out.println("Key tidak ditemukan dalam tree");
-    //         return;
-    //     }
+    // if (z == TNULL) {
+    // System.out.println("Key tidak ditemukan dalam tree");
+    // return;
+    // }
 
-    //     y = z;
-    //     boolean yOriginalColor = y.isRed();
-    //     if (z.getLeft() == TNULL) {
-    //         x = z.getRight();
-    //         rbTransplant(z, z.getRight());
-    //     } else if (z.getRight() == TNULL) {
-    //         x = z.getLeft();
-    //         rbTransplant(z, z.getLeft());
-    //     } else {
-    //         y = minimum(z.getRight());
-    //         yOriginalColor = y.isRed();
-    //         x = y.getRight();
-    //         if (y.getParent() == z) {
-    //             x.setParent(y);
-    //         } else {
-    //             rbTransplant(y, y.getRight());
-    //             y.setRight(z.getRight());
-    //             y.getRight().setParent(y);
-    //         }
-    //         rbTransplant(z, y);
-    //         y.setLeft(z.getLeft());
-    //         y.getLeft().setParent(y);
-    //         y.setRed(z.isRed());
-    //     }
-    //     if (!yOriginalColor) {
-    //         fixDelete(x);
-    //     }
+    // y = z;
+    // boolean yOriginalColor = y.isRed();
+    // if (z.getLeft() == TNULL) {
+    // x = z.getRight();
+    // rbTransplant(z, z.getRight());
+    // } else if (z.getRight() == TNULL) {
+    // x = z.getLeft();
+    // rbTransplant(z, z.getLeft());
+    // } else {
+    // y = minimum(z.getRight());
+    // yOriginalColor = y.isRed();
+    // x = y.getRight();
+    // if (y.getParent() == z) {
+    // x.setParent(y);
+    // } else {
+    // rbTransplant(y, y.getRight());
+    // y.setRight(z.getRight());
+    // y.getRight().setParent(y);
+    // }
+    // rbTransplant(z, y);
+    // y.setLeft(z.getLeft());
+    // y.getLeft().setParent(y);
+    // y.setRed(z.isRed());
+    // }
+    // if (!yOriginalColor) {
+    // fixDelete(x);
+    // }
     // }
 
     public void printTree() {
         printHelper(this.root, " ", true);
     }
 
-    private void printHelper(Node<K,V> root, String Indent, boolean isLeft) {
+    private void printHelper(Node<K, V> root, String Indent, boolean isLeft) {
         if (root != TNULL) {
-        
+
             printHelper(root.getRight(), Indent + (isLeft ? "│   " : "    "), false);
-            System.out.println(Indent + (isLeft ? "└── " : "┌── ") + 
-                (root.isRed() ? "\033[38;2;255;0;0m" + root.getKey() + "\033[0m" : root.getKey() + ""));
+            System.out.println(Indent + (isLeft ? "└── " : "┌── ") +
+                    (root.isRed() ? "\033[38;2;255;0;0m" + root.getKey() + "\033[0m" : root.getKey() + ""));
             printHelper(root.getLeft(), Indent + (isLeft ? "    " : "│   "), true);
         }
     }
+
     
     private void preOrderHelper(Node node) {
         if (node != TNULL) {
@@ -349,6 +355,7 @@ public class rbTree<K extends Comparable<K>, V> {
             inOrderHelper(node.getRight());
         }
     }
+
 
     private void postOrderHelper(Node node) {
         if (node != TNULL) {
@@ -376,21 +383,58 @@ public class rbTree<K extends Comparable<K>, V> {
         System.out.println();
     }
 
-    // public boolean search(char key) {
-    //     Node result = searchHelper(this.root, key);
-    //     return result != TNULL;
+    public List<Node<K, V>> search(K key) {
+        return searchHelper(this.root, key);  
+    }
+    
+    private List<Node<K, V>> searchHelper(Node<K, V> node, K key) {
+        List<Node<K, V>> result = new ArrayList<>();  
+    
+        if (node == TNULL) {
+            return result;  
+        }
+    
+        if (node.getKey().toString().contains(key.toString())) {
+            System.out.println("Ditemukan: " + node.getKey()); 
+            result.add(node); 
+        }
+    
+        int comparison = key.compareTo(node.getKey());  
+    
+        if (comparison < 0) {
+            result.addAll(searchHelper(node.getLeft(), key)); 
+            result.addAll(searchHelper(node.getRight(), key));
+        } else{
+            result.addAll(searchHelper(node.getRight(), key));
+            result.addAll(searchHelper(node.getLeft(), key)); 
+        } 
+        return result; 
+    }
+    
+
+    // public String searchValueUsingKey(rbTree<String, String> tree, String key){
+    // Node<String, String> result = tree.search(key);
+
+    // if (result != null) {
+    // System.out.println("Key found: " + key + ", Value: " + result);
+    // } else {
+    // System.out.println("Key " + key + " not found in the tree.");
+    // }
     // }
 
-    // private Node searchHelper(Node node, char key) {
-    //     if (node == TNULL || key == node.getKey()) {
-    //         return node;
-    //     }
 
-    //     if (key < node.getKey()) {
-    //         return searchHelper(node.getLeft(), key);
-    //     }
-    //     return searchHelper(node.getRight(), key);
-    // }
+//     public static void main(String[] args) {
+//         rbTree<String, String> tree = new rbTree<>();
+
+//         tree.insert("Alya", "valueeee");
+//         tree.insert("al", "semua");
+//         tree.insert("ai za", null);
+//         tree.insert("ul", null);
+//         tree.insert("semua", "1234");
+
+//         tree.search("a");
+//         tree.printTree();
+//     }
 
     // public static void main(String []args){
     //     rbTree<Integer, String> tree = new rbTree<>();
@@ -401,4 +445,5 @@ public class rbTree<K extends Comparable<K>, V> {
         
     //     tree.printTree();
     // }
+
 }
