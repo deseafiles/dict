@@ -398,16 +398,8 @@ public class rbTree<K extends Comparable<K>, V> {
             System.out.println("Ditemukan: " + node.getKey()); 
             result.add(node); 
         }
-    
-        int comparison = key.compareTo(node.getKey());  
-    
-        if (comparison < 0) {
             result.addAll(searchHelper(node.getLeft(), key)); 
             result.addAll(searchHelper(node.getRight(), key));
-        } else{
-            result.addAll(searchHelper(node.getRight(), key));
-            result.addAll(searchHelper(node.getLeft(), key)); 
-        } 
         return result; 
     }
     
