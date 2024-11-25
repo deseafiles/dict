@@ -3,12 +3,14 @@
  */
 package Search;
 
-public class App {
-    public String getGreeting() {
-        return "Hello World!";
-    }
+import Search.Models.rbTree;
+import Search.Utils.JsonParsing;
 
+public class App {
     public static void main(String[] args) {
-        System.out.println(new App().getGreeting());
+        rbTree<String, String> tree = new rbTree<>();
+        String resourcePath = "/data.json"; // Path file JSON di dalam folder resources
+        JsonParsing.loadJsonData(tree, resourcePath);
     }
 }
+

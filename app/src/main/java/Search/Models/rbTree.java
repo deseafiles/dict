@@ -1,30 +1,33 @@
 package Search.Models;
 
-class Node {
-    private char key;
-    private Node right;
-    private Node left;
-    private Node parent;
+
+class Node<K extends Comparable<K>, V> {
+    private K key;
+    public V value;
+    private Node <K,V> right;
+    private Node <K, V> left;
+    private Node <K, V>parent;
     private boolean red;
 
     public Node() {
         // Default constructor for TNULL
     }
 
-    public Node(char key) {
+    public Node (K key, V value) {
         this.key = key;
+        this.value = value;
         this.red = true;
     }
 
-    public void setRight(Node right) {
+    public void setRight(Node<K,V> right) {
         this.right = right;
     }
 
-    public void setLeft(Node left) {
+    public void setLeft(Node<K,V> left) {
         this.left = left;
     }
 
-    public void setParent(Node parent) {
+    public void setParent(Node<K,V> parent) {
         this.parent = parent;
     }
 
@@ -32,23 +35,23 @@ class Node {
         this.red = red;
     }
 
-    public void setKey(char key) {
+    public void setKey(K key) {
         this.key = key;
     }
 
-    public Node getRight() {
+    public Node<K,V> getRight() {
         return right;
     }
 
-    public Node getLeft() {
+    public Node<K,V> getLeft() {
         return left;
     }
 
-    public Node getParent() {
+    public Node<K,V> getParent() {
         return parent;
     }
 
-    public char getKey() {
+    public K getKey() {
         return key;
     }
 
@@ -57,20 +60,20 @@ class Node {
     }
 }
 
-public class rbTree {
-     private Node root;
-    private Node TNULL;
+public class rbTree<K extends Comparable<K>, V> {
+    private Node<K, V> root;
+    private Node<K, V> TNULL;
 
     public rbTree() {
-        TNULL = new Node();
+        TNULL = new Node<K, V>();
         TNULL.setRed(false);
         TNULL.setLeft(TNULL);
         TNULL.setRight(TNULL);
         root = TNULL;
     }
 
-    private void fixInsert(Node node) {
-        Node uncle;
+    private void fixInsert(Node<K, V> node) {
+        Node<K, V> uncle;
         while (node.getParent() != null && node.getParent().isRed()) {
             if (node.getParent() == node.getParent().getParent().getLeft()) {
                 uncle = node.getParent().getParent().getRight();
@@ -111,44 +114,50 @@ public class rbTree {
         }
         root.setRed(false);
     }
+    
 
-    public void insert(char key) {
-        Node node = new Node();
+    public void insert(K key, V value) {
+        Node<K,V> node = new Node<>();
         node.setParent(null);
         node.setKey(key);
         node.setLeft(TNULL);
         node.setRight(TNULL);
         node.setRed(true);
 
-        Node y = null;
-        Node x = root;
+        Node<K,V> y = null;
+        Node<K,V> x = root;
 
         while (x != TNULL) {
             y = x;
-            if (node.getKey() < x.getKey()) {
+            int comparison = node.getKey().compareTo(x.getKey());
+            if (comparison < 0) {
                 x = x.getLeft();
-            } else if (node.getKey() > x.getKey()) {
+            } else if (comparison > 0) {
                 x = x.getRight();
             } else {
-                System.out.println("Duplicate key: " + key);
+                // System.out.println("Duplicate key: " + node.getKey());
                 return;
             }
         }
-
-        node.setParent(y);
+        
+        node.setParent(y); // Menetapkan parent node
         if (y == null) {
-            root = node;
-        } else if (node.getKey() < y.getKey()) {
-            y.setLeft(node);
+            root = node; // root hanya akan di-set ketika node pertama dimasukkan
         } else {
-            y.setRight(node);
+            int comparison = node.getKey().compareTo(y.getKey());
+            if (comparison < 0) {
+                y.setLeft(node);
+            } else {
+                y.setRight(node);
+            }
         }
-        System.out.println("Key " + node.getKey() + " berhasil ditambahkan!");
+        // System.out.println("Key " + node.getKey() + " berhasil ditambahkan!");
         fixInsert(node);
     }
+    
 
-    private void leftRotate(Node x) {
-        Node y = x.getRight();
+    private void leftRotate(Node<K,V> x) {
+        Node<K,V> y = x.getRight();
         x.setRight(y.getLeft());
         if (y.getLeft() != TNULL) {
             y.getLeft().setParent(x);
@@ -165,8 +174,8 @@ public class rbTree {
         x.setParent(y);
     }
 
-    private void rightRotate(Node y) {
-        Node x = y.getLeft();
+    private void rightRotate(Node <K,V> y) {
+        Node<K,V> x = y.getLeft();
         y.setLeft(x.getRight());
         if (x.getRight() != TNULL) {
             x.getRight().setParent(y);
@@ -183,139 +192,139 @@ public class rbTree {
         y.setParent(x);
     }
 
-    private void fixDelete(Node x) {
-        Node s;
-        while (x != root && !x.isRed()) {
-            if (x == x.getParent().getLeft()) {
-                s = x.getParent().getRight();
-                if (s.isRed()) {
-                    s.setRed(false);
-                    x.getParent().setRed(true);
-                    leftRotate(x.getParent());
-                    s = x.getParent().getRight();
-                }
+    // private void fixDelete(Node x) {
+    //     Node s;
+    //     while (x != root && !x.isRed()) {
+    //         if (x == x.getParent().getLeft()) {
+    //             s = x.getParent().getRight();
+    //             if (s.isRed()) {
+    //                 s.setRed(false);
+    //                 x.getParent().setRed(true);
+    //                 leftRotate(x.getParent());
+    //                 s = x.getParent().getRight();
+    //             }
 
-                if (!s.getLeft().isRed() && !s.getRight().isRed()) {
-                    s.setRed(true);
-                    x = x.getParent();
-                } else {
-                    if (!s.getRight().isRed()) {
-                        s.getLeft().setRed(false);
-                        s.setRed(true);
-                        rightRotate(s);
-                        s = x.getParent().getRight();
-                    }
+    //             if (!s.getLeft().isRed() && !s.getRight().isRed()) {
+    //                 s.setRed(true);
+    //                 x = x.getParent();
+    //             } else {
+    //                 if (!s.getRight().isRed()) {
+    //                     s.getLeft().setRed(false);
+    //                     s.setRed(true);
+    //                     rightRotate(s);
+    //                     s = x.getParent().getRight();
+    //                 }
 
-                    s.setRed(x.getParent().isRed());
-                    x.getParent().setRed(false);
-                    s.getRight().setRed(false);
-                    leftRotate(x.getParent());
-                    x = root;
-                }
-            } else {
-                s = x.getParent().getLeft();
-                if (s.isRed()) {
-                    s.setRed(false);
-                    x.getParent().setRed(true);
-                    rightRotate(x.getParent());
-                    s = x.getParent().getLeft();
-                }
+    //                 s.setRed(x.getParent().isRed());
+    //                 x.getParent().setRed(false);
+    //                 s.getRight().setRed(false);
+    //                 leftRotate(x.getParent());
+    //                 x = root;
+    //             }
+    //         } else {
+    //             s = x.getParent().getLeft();
+    //             if (s.isRed()) {
+    //                 s.setRed(false);
+    //                 x.getParent().setRed(true);
+    //                 rightRotate(x.getParent());
+    //                 s = x.getParent().getLeft();
+    //             }
 
-                if (!s.getRight().isRed() && !s.getLeft().isRed()) {
-                    s.setRed(true);
-                    x = x.getParent();
-                } else {
-                    if (!s.getLeft().isRed()) {
-                        s.getRight().setRed(false);
-                        s.setRed(true);
-                        leftRotate(s);
-                        s = x.getParent().getLeft();
-                    }
+    //             if (!s.getRight().isRed() && !s.getLeft().isRed()) {
+    //                 s.setRed(true);
+    //                 x = x.getParent();
+    //             } else {
+    //                 if (!s.getLeft().isRed()) {
+    //                     s.getRight().setRed(false);
+    //                     s.setRed(true);
+    //                     leftRotate(s);
+    //                     s = x.getParent().getLeft();
+    //                 }
 
-                    s.setRed(x.getParent().isRed());
-                    x.getParent().setRed(false);
-                    s.getLeft().setRed(false);
-                    rightRotate(x.getParent());
-                    x = root;
-                }
-            }
-        }
-        x.setRed(false);
-    }
+    //                 s.setRed(x.getParent().isRed());
+    //                 x.getParent().setRed(false);
+    //                 s.getLeft().setRed(false);
+    //                 rightRotate(x.getParent());
+    //                 x = root;
+    //             }
+    //         }
+    //     }
+    //     x.setRed(false);
+    // }
 
-    private void rbTransplant(Node u, Node v) {
-        if (u.getParent() == null) {
-            root = v;
-        } else if (u == u.getParent().getLeft()) {
-            u.getParent().setLeft(v);
-        } else {
-            u.getParent().setRight(v);
-        }
-        v.setParent(u.getParent());
-    }
+    // private void rbTransplant(Node u, Node v) {
+    //     if (u.getParent() == null) {
+    //         root = v;
+    //     } else if (u == u.getParent().getLeft()) {
+    //         u.getParent().setLeft(v);
+    //     } else {
+    //         u.getParent().setRight(v);
+    //     }
+    //     v.setParent(u.getParent());
+    // }
 
-    private Node minimum(Node node) {
-        while (node.getLeft() != TNULL) {
-            node = node.getLeft();
-        }
-        return node;
-    }
+    // private Node minimum(Node node) {
+    //     while (node.getLeft() != TNULL) {
+    //         node = node.getLeft();
+    //     }
+    //     return node;
+    // }
 
-    public void deleteNode(char key) {
-        Node z = TNULL;
-        Node x, y;
-        Node node = root;
+    // public void deleteNode(char key) {
+    //     Node z = TNULL;
+    //     Node x, y;
+    //     Node node = root;
 
-        while (node != TNULL) {
-            if (node.getKey() == key) {
-                z = node;
-            }
-            if (node.getKey() <= key) {
-                node = node.getRight();
-            } else {
-                node = node.getLeft();
-            }
-        }
+    //     while (node != TNULL) {
+    //         if (node.getKey() == key) {
+    //             z = node;
+    //         }
+    //         if (node.getKey() <= key) {
+    //             node = node.getRight();
+    //         } else {
+    //             node = node.getLeft();
+    //         }
+    //     }
 
-        if (z == TNULL) {
-            System.out.println("Key tidak ditemukan dalam tree");
-            return;
-        }
+    //     if (z == TNULL) {
+    //         System.out.println("Key tidak ditemukan dalam tree");
+    //         return;
+    //     }
 
-        y = z;
-        boolean yOriginalColor = y.isRed();
-        if (z.getLeft() == TNULL) {
-            x = z.getRight();
-            rbTransplant(z, z.getRight());
-        } else if (z.getRight() == TNULL) {
-            x = z.getLeft();
-            rbTransplant(z, z.getLeft());
-        } else {
-            y = minimum(z.getRight());
-            yOriginalColor = y.isRed();
-            x = y.getRight();
-            if (y.getParent() == z) {
-                x.setParent(y);
-            } else {
-                rbTransplant(y, y.getRight());
-                y.setRight(z.getRight());
-                y.getRight().setParent(y);
-            }
-            rbTransplant(z, y);
-            y.setLeft(z.getLeft());
-            y.getLeft().setParent(y);
-            y.setRed(z.isRed());
-        }
-        if (!yOriginalColor) {
-            fixDelete(x);
-        }
-    }
+    //     y = z;
+    //     boolean yOriginalColor = y.isRed();
+    //     if (z.getLeft() == TNULL) {
+    //         x = z.getRight();
+    //         rbTransplant(z, z.getRight());
+    //     } else if (z.getRight() == TNULL) {
+    //         x = z.getLeft();
+    //         rbTransplant(z, z.getLeft());
+    //     } else {
+    //         y = minimum(z.getRight());
+    //         yOriginalColor = y.isRed();
+    //         x = y.getRight();
+    //         if (y.getParent() == z) {
+    //             x.setParent(y);
+    //         } else {
+    //             rbTransplant(y, y.getRight());
+    //             y.setRight(z.getRight());
+    //             y.getRight().setParent(y);
+    //         }
+    //         rbTransplant(z, y);
+    //         y.setLeft(z.getLeft());
+    //         y.getLeft().setParent(y);
+    //         y.setRed(z.isRed());
+    //     }
+    //     if (!yOriginalColor) {
+    //         fixDelete(x);
+    //     }
+    // }
 
     public void printTree() {
         printHelper(this.root, " ", true);
     }
 
-    private void printHelper(Node root, String Indent, boolean isLeft) {
+    private void printHelper(Node<K,V> root, String Indent, boolean isLeft) {
         if (root != TNULL) {
         
             printHelper(root.getRight(), Indent + (isLeft ? "│   " : "    "), false);
@@ -367,33 +376,29 @@ public class rbTree {
         System.out.println();
     }
 
-    public int height() {
-        return heightHelper(root);
-    }
+    // public boolean search(char key) {
+    //     Node result = searchHelper(this.root, key);
+    //     return result != TNULL;
+    // }
 
-    private int heightHelper(Node node) {
-        if (node == TNULL) {
-            return 0;
-        } else {
-            int leftHeight = heightHelper(node.getLeft());
-            int rightHeight = heightHelper(node.getRight());
-            return Math.max(leftHeight, rightHeight) + 1;
-        }
-    }
+    // private Node searchHelper(Node node, char key) {
+    //     if (node == TNULL || key == node.getKey()) {
+    //         return node;
+    //     }
 
-    public boolean search(char key) {
-        Node result = searchHelper(this.root, key);
-        return result != TNULL;
-    }
+    //     if (key < node.getKey()) {
+    //         return searchHelper(node.getLeft(), key);
+    //     }
+    //     return searchHelper(node.getRight(), key);
+    // }
 
-    private Node searchHelper(Node node, char key) {
-        if (node == TNULL || key == node.getKey()) {
-            return node;
-        }
+    // public static void main(String []args){
+    //     rbTree<Integer, String> tree = new rbTree<>();
 
-        if (key < node.getKey()) {
-            return searchHelper(node.getLeft(), key);
-        }
-        return searchHelper(node.getRight(), key);
-    }
+    //     tree.insert(10);
+    //     tree.insert(20);
+    //     tree.insert(30);
+        
+    //     tree.printTree();
+    // }
 }
