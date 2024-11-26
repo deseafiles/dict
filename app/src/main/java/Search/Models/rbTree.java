@@ -3,75 +3,12 @@ package Search.Models;
 import java.util.ArrayList;
 import java.util.List;
 
-class Node<K extends Comparable<K>, V> {
-    private K key;
-    public V value;
-    private Node<K, V> right;
-    private Node<K, V> left;
-    private Node<K, V> parent;
-    private boolean red;
-
-    public Node() {
-        // Default constructor for TNULL
-    }
-
-    public Node(K key, V value) {
-        this.key = key;
-        this.value = value;
-        this.red = true;
-    }
-
-    public void setRight(Node<K, V> right) {
-        this.right = right;
-    }
-
-    public void setLeft(Node<K, V> left) {
-        this.left = left;
-    }
-
-    public void setParent(Node<K, V> parent) {
-        this.parent = parent;
-    }
-
-    public void setRed(boolean red) {
-        this.red = red;
-    }
-
-    public void setKey(K key) {
-        this.key = key;
-    }
-
-    public Node<K, V> getRight() {
-        return right;
-    }
-
-    public Node<K, V> getLeft() {
-        return left;
-    }
-
-    public Node<K, V> getParent() {
-        return parent;
-    }
-
-    public K getKey() {
-        return key;
-    }
-
-    public V getValue() {
-        return value;
-    }
-
-    public boolean isRed() {
-        return red;
-    }
-}
-
 public class rbTree<K extends Comparable<K>, V> {
     private Node<K, V> root;
     private Node<K, V> TNULL;
 
     public rbTree() {
-        TNULL = new Node<K, V>();
+        TNULL = new Node<>(null, null);
         TNULL.setRed(false);
         TNULL.setLeft(TNULL);
         TNULL.setRight(TNULL);
@@ -122,12 +59,13 @@ public class rbTree<K extends Comparable<K>, V> {
     }
 
     public void insert(K key, V value) {
-        Node<K, V> node = new Node<>();
+        Node<K, V> node = new Node<>(key, value);
         node.setParent(null);
         node.setKey(key);
         node.setLeft(TNULL);
         node.setRight(TNULL);
         node.setRed(true);
+        node.setValue(value);
 
         Node<K, V> y = null;
         Node<K, V> x = root;
@@ -338,7 +276,6 @@ public class rbTree<K extends Comparable<K>, V> {
         }
     }
 
-
     private void preOrderHelper(Node<K, V> node) {
         if (node != TNULL) {
             System.out.print(node.getKey() + " ");
@@ -354,8 +291,6 @@ public class rbTree<K extends Comparable<K>, V> {
             inOrderHelper(node.getRight());
         }
     }
-
-
 
     private void postOrderHelper(Node<K, V> node) {
         if (node != TNULL) {
@@ -384,58 +319,59 @@ public class rbTree<K extends Comparable<K>, V> {
     }
 
     public List<Node<K, V>> search(K key) {
-        return searchHelper(this.root, key);  
+        return searchHelper(this.root, key);
     }
-    
+
     private List<Node<K, V>> searchHelper(Node<K, V> node, K key) {
-        List<Node<K, V>> result = new ArrayList<>();  
-    
+        List<Node<K, V>> result = new ArrayList<>();
+        // String JsonPath = "app/src/main/resources/data.json";
+
         if (node == TNULL) {
-            return result;  
+            return result;
         }
-    
+
         if (node.getKey().toString().contains(key.toString())) {
-            System.out.println("Ditemukan: " + node.getKey()); 
-
-            result.add(node); 
+            System.out.println("Ditemukan Key : " + node.getKey() + ", Value : " + node.getValue());
+            result.add(node);
         }
-            result.addAll(searchHelper(node.getLeft(), key)); 
-            result.addAll(searchHelper(node.getRight(), key));
-        return result; 
+
+        result.addAll(searchHelper(node.getLeft(), key));
+        result.addAll(searchHelper(node.getRight(), key));
+
+        return result;
     }
-    
-
-    // public String searchValueUsingKey(rbTree<String, String> tree, String key){
-    // Node<String, String> result = tree.search(key);
-
-    // if (result != null) {
-    // System.out.println("Key found: " + key + ", Value: " + result);
-    // } else {
-    // System.out.println("Key " + key + " not found in the tree.");
-    // }
-    // }
-
-    public static void main(String[] args) {
-        rbTree<String, String> tree = new rbTree<>();
-
-        tree.insert("Alya", "valueeee");
-        tree.insert("al", "semua");
-        tree.insert("ai za", null);
-        tree.insert("ul", null);
-        tree.insert("semua", "1234");
-
-        tree.search("a");
-        tree.printTree();
-    }
-    
-
-    // public String searchValueUsingKey(rbTree<String, String> tree, String key){
-    // Node<String, String> result = tree.search(key);
-
-    // if (result != null) {
-    // System.out.println("Key found: " + key + ", Value: " + result);
-    // } else {
-    // System.out.println("Key " + key + " not found in the tree.");
-    // }
-    // }
 }
+
+// public String searchValueUsingKey(rbTree<String, String> tree, String key){
+// Node<String, String> result = tree.search(key);
+
+// if (result != null) {
+// System.out.println("Key found: " + key + ", Value: " + result);
+// } else {
+// System.out.println("Key " + key + " not found in the tree.");
+// }
+// }
+
+// public static void main(String[] args) {
+// rbTree<String, String> tree = new rbTree<>();
+
+// tree.insert("Alya", "valueeee");
+// tree.insert("al", "semua");
+// tree.insert("ai za", null);
+// tree.insert("ul", null);
+// tree.insert("semua", "1234");
+
+// tree.search("a");
+// tree.printTree();
+// }
+
+// public String searchValueUsingKey(rbTree<String, String> tree, String key){
+// Node<String, String> result = tree.search(key);
+
+// if (result != null) {
+// System.out.println("Key found: " + key + ", Value: " + result);
+// } else {
+// System.out.println("Key " + key + " not found in the tree.");
+// }
+// }
+// }

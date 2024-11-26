@@ -27,6 +27,8 @@ dependencies {
     implementation ("org.json:json:20230227")
 
     implementation ("com.fasterxml.jackson.core:jackson-databind:2.15.2")
+
+    implementation ("com.jayway.jsonpath:json-path:2.6.0")
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
