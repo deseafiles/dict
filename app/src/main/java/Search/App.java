@@ -6,17 +6,14 @@ import Search.Utils.JsonParsing;
 
 public class App {
     public static void main(String[] args) {
-        // Menentukan path untuk resource JSON
-        String resourcePath = "/data.json"; // pastikan path sesuai dengan struktur folder Anda
+        String resourcePath = "/data.json"; 
 
-        // Membuat pohon Red-Black
+
         rbTree<String, String> rbTree = new rbTree<>();
 
-        // Memuat data JSON ke dalam pohon
         JsonParsing.loadJsonData(rbTree, resourcePath);
 
-        // Setelah data dimuat, Anda bisa melakukan pencarian atau operasi lain di pohon
-        String searchKey = "Mengenal"; // ganti dengan key yang sesuai
+        String searchKey = "Mengenal"; 
         var searchResults = rbTree.search(searchKey);
         
         if (searchResults.isEmpty()) {
