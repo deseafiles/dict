@@ -2,17 +2,17 @@ package Search.Models;
 
 import org.checkerframework.checker.units.qual.K;
 
-public class Node <K extends Comparable<K>, V> {
-    private K key;
+public class Node<K extends Comparable<K>, V> {
+    public K key;
     public V value;
     private Node<K, V> right;
     private Node<K, V> left;
     private Node<K, V> parent;
     private boolean red;
 
-    public Node() {
-        // Default constructor for TNULL
-    }
+    // public Node() {
+    //     // Default constructor for TNULL
+    // }
 
     public Node(K key, V value) {
         this.key = key;
