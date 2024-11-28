@@ -3,20 +3,20 @@ package Search.Models;
 import java.util.ArrayList;
 import java.util.List;
 
-public class rbTree<K extends Comparable<K>, V> {
-    private Node<K, V> root;
-    private Node<K, V> TNULL;
+public class rbTree {
+    private Node root;
+    private Node TNULL;
 
     public rbTree() {
-        TNULL = new Node<>(null, null);
+        TNULL = new Node(null, null);
         TNULL.setRed(false);
         TNULL.setLeft(TNULL);
         TNULL.setRight(TNULL);
         root = TNULL;
     }
 
-    private void fixInsert(Node<K, V> node) {
-        Node<K, V> uncle;
+    private void fixInsert(Node node) {
+        Node uncle;
         while (node.getParent() != null && node.getParent().isRed()) {
             if (node.getParent() == node.getParent().getParent().getLeft()) {
                 uncle = node.getParent().getParent().getRight();
@@ -58,8 +58,8 @@ public class rbTree<K extends Comparable<K>, V> {
         root.setRed(false);
     }
 
-    public void insert(K key, V value) {
-        Node<K, V> node = new Node<>(key, value);
+    public void insert(String key, String value) {
+        Node node = new Node(key, value);
         node.setParent(null);
         node.setKey(key);
         node.setLeft(TNULL);
@@ -67,8 +67,8 @@ public class rbTree<K extends Comparable<K>, V> {
         node.setRed(true);
         node.setValue(value);
 
-        Node<K, V> y = null;
-        Node<K, V> x = root;
+        Node y = null;
+        Node x = root;
 
         while (x != TNULL) {
             y = x;
@@ -98,8 +98,8 @@ public class rbTree<K extends Comparable<K>, V> {
         fixInsert(node);
     }
 
-    private void leftRotate(Node<K, V> x) {
-        Node<K, V> y = x.getRight();
+    private void leftRotate(Node x) {
+        Node y = x.getRight();
         x.setRight(y.getLeft());
         if (y.getLeft() != TNULL) {
             y.getLeft().setParent(x);
@@ -116,8 +116,8 @@ public class rbTree<K extends Comparable<K>, V> {
         x.setParent(y);
     }
 
-    private void rightRotate(Node<K, V> y) {
-        Node<K, V> x = y.getLeft();
+    private void rightRotate(Node y) {
+        Node x = y.getLeft();
         y.setLeft(x.getRight());
         if (x.getRight() != TNULL) {
             x.getRight().setParent(y);
@@ -266,7 +266,7 @@ public class rbTree<K extends Comparable<K>, V> {
         printHelper(this.root, " ", true);
     }
 
-    private void printHelper(Node<K, V> root, String Indent, boolean isLeft) {
+    private void printHelper(Node root, String Indent, boolean isLeft) {
         if (root != TNULL) {
 
             printHelper(root.getRight(), Indent + (isLeft ? "│   " : "    "), false);
@@ -276,7 +276,7 @@ public class rbTree<K extends Comparable<K>, V> {
         }
     }
 
-    private void preOrderHelper(Node<K, V> node) {
+    private void preOrderHelper(Node node) {
         if (node != TNULL) {
             System.out.print(node.getKey() + " ");
             preOrderHelper(node.getLeft());
@@ -284,7 +284,7 @@ public class rbTree<K extends Comparable<K>, V> {
         }
     }
 
-    private void inOrderHelper(Node<K, V> node) {
+    private void inOrderHelper(Node node) {
         if (node != TNULL) {
             inOrderHelper(node.getLeft());
             System.out.print(node.getKey() + " ");
@@ -292,7 +292,7 @@ public class rbTree<K extends Comparable<K>, V> {
         }
     }
 
-    private void postOrderHelper(Node<K, V> node) {
+    private void postOrderHelper(Node node) {
         if (node != TNULL) {
             postOrderHelper(node.getLeft());
             postOrderHelper(node.getRight());
@@ -318,12 +318,12 @@ public class rbTree<K extends Comparable<K>, V> {
         System.out.println();
     }
 
-    public List<Node<K, V>> search(K key) {
+    public List<Node> search(String key) {
         return searchHelper(this.root, key);
     }
 
-    private List<Node<K, V>> searchHelper(Node<K, V> node, K key) {
-        List<Node<K, V>> result = new ArrayList<>();
+    private List<Node> searchHelper(Node node, String key) {
+        List<Node> result = new ArrayList<>();
         // String JsonPath = "app/src/main/resources/data.json";
 
         if (node == TNULL) {
