@@ -8,10 +8,9 @@ import Search.Models.rbTree;
 
 public class JsonParsing {
 
-    public static void loadJsonData(rbTree<String, String> tree, String resourcePath) {
+    public static void loadJsonData(rbTree tree, String resourcePath) {
         try (InputStream filStream = JsonParsing.class.getResourceAsStream(resourcePath)) {
             if (filStream != null) {
-                System.out.println("File found: " + resourcePath);
                 JSONArray jsonArray = new JSONArray(new JSONTokener(filStream));
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject jsonObject = jsonArray.getJSONObject(i);

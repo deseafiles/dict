@@ -1,32 +1,28 @@
 package Search.Models;
 
-public class Node<K extends Comparable<K>, V> {
-    public K key;
-    public V value;
-    private Node<K, V> right;
-    private Node<K, V> left;
-    private Node<K, V> parent;
+public class Node {
+    public String key;
+    public String value;
+    private Node right;
+    private Node left;
+    private Node parent;
     private boolean red;
 
-    // public Node() {
-    //     // Default constructor for TNULL
-    // }
-
-    public Node(K key, V value) {
+    public Node(String key, String value) {
         this.key = key;
         this.value = value;
         this.red = true;
     }
 
-    public void setRight(Node<K, V> right) {
+    public void setRight(Node right) {
         this.right = right;
     }
 
-    public void setLeft(Node<K, V> left) {
+    public void setLeft(Node left) {
         this.left = left;
     }
 
-    public void setParent(Node<K, V> parent) {
+    public void setParent(Node parent) {
         this.parent = parent;
     }
 
@@ -34,31 +30,31 @@ public class Node<K extends Comparable<K>, V> {
         this.red = red;
     }
 
-    public void setKey(K key) {
+    public void setKey(String key) {
         this.key = key;
     }
 
-    public Node<K, V> getRight() {
+    public Node getRight() {
         return right;
     }
 
-    public Node<K, V> getLeft() {
+    public Node getLeft() {
         return left;
     }
 
-    public Node<K, V> getParent() {
+    public Node getParent() {
         return parent;
     }
 
-    public K getKey() {
+    public String getKey() {
         return key;
     }
 
-    public V getValue() {
+    public String getValue() {
         return value;
     }
 
-    public void setValue(V value) {
+    public void setValue(String value) {
         this.value = value;
     }
 
