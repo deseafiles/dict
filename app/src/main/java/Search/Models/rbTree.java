@@ -318,29 +318,97 @@ public class rbTree<K extends Comparable<K>, V> {
         System.out.println();
     }
 
-    public List<Node<K, V>> search(K key) {
-        return searchHelper(this.root, key);
+    //jadi kalau ada key yang included (bukan sama persis), kode ini yang dipakai
+    public List<Node<K, V>> searchIncludedMatchKey(K key) {
+        return searchHelperUsingIncludedKey(this.root, key);
     }
 
-    private List<Node<K, V>> searchHelper(Node<K, V> node, K key) {
-        List<Node<K, V>> result = new ArrayList<>();
-        // String JsonPath = "app/src/main/resources/data.json";
+    private List<Node<K, V>> searchHelperUsingIncludedKey(Node<K, V> node, K key) {
+        List<Node<K, V>> resultByKey = new ArrayList<>();
 
         if (node == TNULL) {
-            return result;
+            return resultByKey;
         }
 
         if (node.getKey().toString().contains(key.toString())) {
             System.out.println("Ditemukan Key : " + node.getKey() + ", Value : " + node.getValue());
-            result.add(node);
+            resultByKey.add(node);
         }
 
-        result.addAll(searchHelper(node.getLeft(), key));
-        result.addAll(searchHelper(node.getRight(), key));
+        resultByKey.addAll(searchHelperUsingIncludedKey(node.getLeft(), key));
+        resultByKey.addAll(searchHelperUsingIncludedKey(node.getRight(), key));
 
-        return result;
+        return resultByKey;
     }
+
+     //jadi kalau ada value yang included (bukan sama persis), kode ini yang dipakai
+    public List<Node<K,V>> searchIncludedMatchValue(V value) {
+        return searchHelperUsingIncludedValue(this.root, value);
+    }
+
+    private List<Node<K,V>> searchHelperUsingIncludedValue(Node<K,V> node, V value) {
+        List<Node<K,V>> resultbyValue = new ArrayList<>();
+
+        if (node == TNULL){
+            return resultbyValue;
+        }
+
+        if(node.getValue().toString().contains(value.toString())){
+            System.out.println("Ditemukan value : " + node.getValue());
+            resultbyValue.add(node);
+        }
+
+        resultbyValue.addAll(searchHelperUsingIncludedValue(node.getLeft(), value));
+        resultbyValue.addAll(searchHelperUsingIncludedValue(node.getRight(), value));
+
+        return resultbyValue;
+    }
+
+    public String searchExactMatchKey(K key){
+        Node<K,V> node = searchHelperUsingMatchKey(this.root, key);
+        return node.getKey().toString();
+    }
+
+    private Node<K,V> searchHelperUsingMatchKey(Node<K,V> node, K key){
+        if (node == TNULL) {
+            return TNULL;
+        }
+
+        if (node.getKey().equals(key)){
+            System.out.println("Ditemukan Key : " + node.getKey() + ", Value : " + node.getValue());
+            return node;
+        }
+
+        searchHelperUsingMatchKey(node.getLeft(), key);
+        searchHelperUsingMatchKey(node.getRight(), key);
+        
+        return node;
+    }
+
+    // public String searchExactMatchValue(K value){
+    //     Node<K,V> node = searchHelperUsingMatchValue(this.root, value);
+    //     return node.getValue().toString();
+    // }
+
+    // private Node<K,V> searchHelperUsingMatchValue(Node<K,V> node, V value){
+    //     if (node == TNULL) {
+    //         return TNULL;
+    //     }
+
+    //     if (node.getValue().equals(value)){
+    //         System.out.println("Ditemukan Key : " + node.getKey() + ", Value : " + node.getValue());
+    //         return node;
+    //     }
+
+    //     searchHelperUsingMatchValue(node.getLeft(), value);
+    //     searchHelperUsingMatchValue(node.getRight(), value);
+        
+    //     return node;
+    // }
+
+
 }
+
 
 // public String searchValueUsingKey(rbTree<String, String> tree, String key){
 // Node<String, String> result = tree.search(key);
