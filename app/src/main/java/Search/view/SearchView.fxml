@@ -16,4 +16,7 @@ public class SearchController {
     @FXML
     private TextField searchBox;
 
+    @FXML
+    private ListView<?> suggestionList;
+
 }
