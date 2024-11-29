@@ -161,7 +161,7 @@ public class rbTree {
             return result;
         }
 
-        if (node.getKey().toString().contains(key.toString())) {
+        if (node.getKey().toString().toLowerCase().contains(key.toString().toLowerCase()) || node.getValue().toString().toLowerCase().contains(key.toString().toLowerCase())) {
             result.add(node);
         }
 
