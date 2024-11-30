@@ -12,6 +12,7 @@
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1024.0" style="-fx-background-color: #FFF2EF;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.searchengine.SearchController">
       <AnchorPane prefHeight="210.0" prefWidth="1024.0" style="-fx-background-color: #FFF2EF;">
             <TextField fx:id="searchBox" layoutX="238.0" layoutY="116.0" prefHeight="50.0" prefWidth="605.0" style="-fx-background-radius: 25;" text="Want to know?...">
+            <ListView fx:id="suggestionList" layoutX="50" layoutY="80" visible="false" />
                <font>
                   <Font size="17.0" />
                </font>
